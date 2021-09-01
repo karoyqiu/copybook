@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 project(copybook VERSION 0.1 LANGUAGES CXX)
 
@@ -11,21 +11,27 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
+set(QT_LIBS
+    PrintSupport
+    Widgets
+)
+
+find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LIBS} LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${QT_LIBS} LinguistTools REQUIRED)
 
 set(TS_FILES copybook_zh_CN.ts)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        ${TS_FILES}
+    common.h
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
+    ${TS_FILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(copybook
+    qt_add_executable(copybook WIN32
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
@@ -43,7 +49,7 @@ else()
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
-        add_executable(copybook
+        add_executable(copybook WIN32
             ${PROJECT_SOURCES}
         )
     endif()
@@ -51,7 +57,17 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(copybook PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_compile_definitions(copybook
+    PRIVATE	QT_DEPRECATED_WARNINGS QT_RESTRICTED_CAST_FROM_ASCII QT_NO_CAST_TO_ASCII
+            QT_NO_CAST_FROM_BYTEARRAY QT_USE_QSTRINGBUILDER QT_NO_PROCESS_COMBINED_ARGUMENT_START
+            RAPIDJSON_HAS_STDSTRING=1 WIN32_LEAN_AND_MEAN
+)
+target_precompile_headers(copybook PRIVATE "common.h")
+
+foreach(L ${QT_LIBS})
+    target_precompile_headers(copybook PRIVATE <Qt${L}>)
+    target_link_libraries(copybook PRIVATE Qt${QT_VERSION_MAJOR}::${L})
+endforeach()
 
 set_target_properties(copybook PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
