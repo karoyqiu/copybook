@@ -24,6 +24,9 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboPrinter"/>
+      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
@@ -221,8 +224,12 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="comboPrinter"/>
+      <item row="9" column="0" colspan="2">
+       <widget class="QPushButton" name="buttonPrint">
+        <property name="text">
+         <string>Print</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -234,7 +241,7 @@
      <x>0</x>
      <y>0</y>
      <width>947</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

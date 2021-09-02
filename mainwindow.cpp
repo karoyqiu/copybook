@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->spinRows, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->comboFont, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
     connect(ui->editChars, &QLineEdit::editingFinished, this, &MainWindow::updatePreview);
+    connect(ui->buttonPrint, &QPushButton::clicked, this, &MainWindow::print);
 }
 
 
@@ -94,6 +95,36 @@ void MainWindow::saveSettings() const
 }
 
 
+QPrinter *MainWindow::createPrinter() const
+{
+    auto info = QPrinterInfo::printerInfo(ui->comboPrinter->currentText());
+    qInfo() << "Current printer:" << info;
+
+    auto *p = new QPrinter(info, QPrinter::PrinterResolution);
+    setPrinterParams(p);
+    return p;
+}
+
+
+void MainWindow::setPrinterParams(QPrinter *printer) const
+{
+    Q_ASSERT(printer != nullptr);
+
+    QPageLayout layout;
+    layout.setOrientation(QPageLayout::Portrait);
+
+    auto psId = static_cast<QPageSize::PageSizeId>(ui->comboPageSize->currentData().toInt());
+    layout.setPageSize(QPageSize(psId));
+
+    auto unit = static_cast<QPageLayout::Unit>(ui->comboUnit->currentIndex());
+    layout.setUnits(unit);
+    layout.setMargins({ ui->spinMarginLeft->value(), ui->spinMarginTop->value(),
+                        ui->spinMarginRight->value(), ui->spinMarginBottom->value() });
+
+    printer->setPageLayout(layout);
+}
+
+
 void MainWindow::fillPageSizes()
 {
     ui->comboPageSize->clear();
@@ -108,21 +139,7 @@ void MainWindow::fillPageSizes()
 
 void MainWindow::adjustPrinterParams()
 {
-    Q_ASSERT(printer_ != nullptr);
-
-    QPageLayout layout;
-    layout.setOrientation(QPageLayout::Portrait);
-
-    auto psId = static_cast<QPageSize::PageSizeId>(ui->comboPageSize->currentData().toInt());
-    layout.setPageSize(QPageSize(psId));
-
-    auto unit = static_cast<QPageLayout::Unit>(ui->comboUnit->currentIndex());
-    layout.setUnits(unit);
-    layout.setMargins({ ui->spinMarginLeft->value(), ui->spinMarginTop->value(),
-                        ui->spinMarginRight->value(), ui->spinMarginBottom->value() });
-
-    printer_->setPageLayout(layout);
-
+    setPrinterParams(printer_);
     updatePreview();
 }
 
@@ -144,18 +161,16 @@ void MainWindow::createPreviewWidget()
         Q_ASSERT(printer_ != nullptr);
         ui->centralLayout->removeWidget(previewer_);
         previewer_->disconnect(this);
-        previewer_->deleteLater();
+
+        delete previewer_;
+        previewer_ = nullptr;
+
         delete printer_;
         printer_ = nullptr;
-        previewer_ = nullptr;
     }
 
     // 构建新打印机组件
-    auto info = QPrinterInfo::printerInfo(ui->comboPrinter->currentText());
-    qInfo() << "Current printer:" << info;
-
-    printer_ = new QPrinter(info, QPrinter::PrinterResolution);
-    adjustPrinterParams();
+    printer_ = createPrinter();
 
     // 构建预览组件
     previewer_ = new QPrintPreviewWidget(printer_, this);
@@ -173,4 +188,12 @@ void MainWindow::draw(QPrinter *printer)
     cp.setFont(ui->comboFont->currentFont());
     cp.setChars(ui->editChars->text());
     cp.paint();
+}
+
+
+void MainWindow::print()
+{
+    auto *printer = createPrinter();
+    draw(printer);
+    delete printer;
 }

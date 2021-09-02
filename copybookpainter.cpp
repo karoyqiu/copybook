@@ -37,9 +37,8 @@ void CopybookPainter::paint()
     height = size + spacing;
     width = boundry.width();
 
-    QPen border(Qt::SolidPattern, 2);
-    QPen cross(Qt::SolidPattern, 1, Qt::DashLine);
-    QPen shadow(Qt::Dense5Pattern, 1);
+    QPen border(Qt::SolidPattern, 1.5);
+    QPen cross(Qt::SolidPattern, 0.75, Qt::DotLine);
 
     p_ = new QPainter(printer_);
     paintRect.moveTo(0, 0);
@@ -78,7 +77,6 @@ void CopybookPainter::paint()
         // 画字
         font_.setPixelSize(qRound(size * 0.9));
         p_->setFont(font_);
-        p_->setPen(Qt::SolidLine);
 
         auto ch = chars_.mid(row % chars_.length(), 1);
 
@@ -86,7 +84,7 @@ void CopybookPainter::paint()
         {
             auto x = size * col;
             QRectF rect(x, y, size, size);
-            p_->setPen(col == 0 ? border : shadow);
+            p_->setPen(col == 0 ? Qt::black : Qt::gray);
             p_->drawText(rect, Qt::AlignCenter, ch);
         }
 

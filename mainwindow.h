@@ -22,12 +22,16 @@ private:
     void loadSettings();
     void saveSettings() const;
 
+    QPrinter *createPrinter() const;
+    void setPrinterParams(QPrinter *printer) const;
+
     void fillPageSizes();
     void adjustPrinterParams();
     void updatePreview();
     void createPreviewWidget();
 
     void draw(QPrinter *printer);
+    void print();
 
 private:
     Ui::MainWindow *ui;
