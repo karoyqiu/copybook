@@ -1,9 +1,10 @@
 ﻿#pragma once
 #include <QMainWindow>
 
-QT_BEGIN_NAMESPACE
+class QPrinter;
+class QPrintPreviewWidget;
+
 namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
 
 
 class MainWindow : public QMainWindow
@@ -21,6 +22,15 @@ private:
     void loadSettings();
     void saveSettings() const;
 
+    void fillPageSizes();
+    void adjustPrinterParams();
+    void updatePreview();
+    void createPreviewWidget();
+
+    void draw(QPrinter *printer);
+
 private:
     Ui::MainWindow *ui;
+    QPrinter *printer_;
+    QPrintPreviewWidget *previewer_;
 };

@@ -5,109 +5,116 @@
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.ui" line="20"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="217"/>
-        <source>Paper size:</source>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="243"/>
+        <source>Printer:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="28"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="218"/>
+        <location filename="mainwindow.ui" line="30"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="244"/>
+        <source>Page size:</source>
+        <oldsource>Paper size:</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="41"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="245"/>
         <source>A4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="36"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="220"/>
+        <location filename="mainwindow.ui" line="49"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="247"/>
         <source>Unit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="44"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="221"/>
+        <location filename="mainwindow.ui" line="60"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="248"/>
         <source>Millimeter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="49"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="222"/>
+        <location filename="mainwindow.ui" line="65"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="249"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="54"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="223"/>
+        <location filename="mainwindow.ui" line="70"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="250"/>
         <source>Inch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="62"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="225"/>
+        <location filename="mainwindow.ui" line="78"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="252"/>
         <source>Page margins:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="74"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="226"/>
+        <location filename="mainwindow.ui" line="93"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="253"/>
         <source>Left: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="87"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="227"/>
+        <location filename="mainwindow.ui" line="106"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="254"/>
         <source>Top: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="100"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="228"/>
+        <location filename="mainwindow.ui" line="119"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="255"/>
         <source>Right: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="113"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="229"/>
+        <location filename="mainwindow.ui" line="132"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="256"/>
         <source>Bottom: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="125"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="230"/>
+        <location filename="mainwindow.ui" line="144"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="257"/>
         <source>Columns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="139"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="231"/>
+        <location filename="mainwindow.ui" line="161"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="258"/>
         <source>Rows:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="153"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="232"/>
+        <location filename="mainwindow.ui" line="178"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="259"/>
         <source>Font:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="163"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="233"/>
+        <location filename="mainwindow.ui" line="191"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="260"/>
         <source>Characters:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="177"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="234"/>
+        <location filename="mainwindow.ui" line="208"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="261"/>
         <source>Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="185"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="235"/>
+        <location filename="mainwindow.ui" line="219"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="262"/>
         <source>One character per page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="210"/>
-        <location filename="build/debug/copybook_autogen/include/ui_mainwindow.h" line="237"/>
+        <location filename="mainwindow.ui" line="244"/>
+        <location filename="build/x64-Debug/copybook_autogen/include/ui_mainwindow.h" line="264"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>

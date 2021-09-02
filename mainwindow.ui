@@ -11,18 +11,31 @@
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+   <layout class="QHBoxLayout" name="centralLayout" stretch="0">
     <item>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Paper size:</string>
+         <string>Printer:</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboPrinter</cstring>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="comboPaperSize">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Page size:</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboPageSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboPageSize">
         <item>
          <property name="text">
           <string>A4</string>
@@ -30,14 +43,17 @@
         </item>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Unit:</string>
         </property>
+        <property name="buddy">
+         <cstring>comboUnit</cstring>
+        </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QComboBox" name="comboUnit">
         <item>
          <property name="text">
@@ -56,14 +72,17 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
          <string>Page margins:</string>
         </property>
+        <property name="buddy">
+         <cstring>spinMarginLeft</cstring>
+        </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QDoubleSpinBox" name="spinMarginLeft">
@@ -105,7 +124,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="spinMarginBotom">
+         <widget class="QDoubleSpinBox" name="spinMarginBottom">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -119,66 +138,81 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Columns:</string>
         </property>
+        <property name="buddy">
+         <cstring>spinColumns</cstring>
+        </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QSpinBox" name="spinColumns">
         <property name="minimum">
          <number>1</number>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Rows:</string>
         </property>
+        <property name="buddy">
+         <cstring>spinRows</cstring>
+        </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="QSpinBox" name="spinRows">
         <property name="minimum">
          <number>1</number>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Font:</string>
         </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QFontComboBox" name="comboFont"/>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Characters:</string>
+        <property name="buddy">
+         <cstring>comboFont</cstring>
         </property>
        </widget>
       </item>
       <item row="6" column="1">
+       <widget class="QFontComboBox" name="comboFont"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Characters:</string>
+        </property>
+        <property name="buddy">
+         <cstring>editChars</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
        <widget class="QLineEdit" name="editChars">
         <property name="clearButtonEnabled">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Mode:</string>
         </property>
+        <property name="buddy">
+         <cstring>comboMode</cstring>
+        </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="QComboBox" name="comboMode">
         <item>
          <property name="text">
@@ -187,10 +221,10 @@
         </item>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboPrinter"/>
+      </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QPrintPreviewWidget" name="printPreview" native="true"/>
     </item>
    </layout>
   </widget>
@@ -217,14 +251,20 @@
    </attribute>
   </widget>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QPrintPreviewWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">qprintpreviewwidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
+ <tabstops>
+  <tabstop>comboPrinter</tabstop>
+  <tabstop>comboPageSize</tabstop>
+  <tabstop>comboUnit</tabstop>
+  <tabstop>spinMarginLeft</tabstop>
+  <tabstop>spinMarginTop</tabstop>
+  <tabstop>spinMarginRight</tabstop>
+  <tabstop>spinMarginBottom</tabstop>
+  <tabstop>spinColumns</tabstop>
+  <tabstop>spinRows</tabstop>
+  <tabstop>comboFont</tabstop>
+  <tabstop>editChars</tabstop>
+  <tabstop>comboMode</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

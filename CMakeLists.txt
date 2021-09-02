@@ -10,6 +10,7 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(USE_FOLDERS ON)
 
 set(QT_LIBS
     PrintSupport
@@ -27,6 +28,7 @@ set(PROJECT_SOURCES
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    copybookpainter.h copybookpainter.cpp
     ${TS_FILES}
 )
 
