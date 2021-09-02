@@ -101,6 +101,7 @@ QPrinter *MainWindow::createPrinter() const
     qInfo() << "Current printer:" << info;
 
     auto *p = new QPrinter(info, QPrinter::PrinterResolution);
+    p->setResolution(300);
     setPrinterParams(p);
     return p;
 }
