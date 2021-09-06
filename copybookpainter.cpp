@@ -1,11 +1,26 @@
 ﻿#include "copybookpainter.h"
 
 
+struct QPainterSaver
+{
+    explicit QPainterSaver(QPainter &p) : p_(p) { p_.save(); }
+    ~QPainterSaver() { p_.restore(); }
+
+    QPainter &p_;
+};
+
+
 CopybookPainter::CopybookPainter(QPrinter *printer)
     : printer_(printer)
-    , p_(nullptr)
+    , mode_(CopybookMode::OneLinePerCharacter)
     , rows_(0)
     , columns_(0)
+    , borderWidth_(1.5)
+    , totalWidth_(0)
+    , cellSize_(0)
+    , rowHeight_(0)
+    , border_(Qt::SolidPattern, borderWidth_)
+    , cross_(Qt::SolidPattern, borderWidth_ / 2, Qt::CustomDashLine, Qt::FlatCap)
 {
     Q_ASSERT(printer != nullptr);
 }
@@ -13,13 +28,12 @@ CopybookPainter::CopybookPainter(QPrinter *printer)
 
 CopybookPainter::~CopybookPainter()
 {
-    delete p_;
 }
 
 
 void CopybookPainter::paint()
 {
-    Q_ASSERT(p_ == nullptr && rows_ > 0 && columns_ > 0 && !chars_.isEmpty());
+    Q_ASSERT(rows_ > 0 && columns_ > 0 && !chars_.isEmpty());
 
     // 统一单位为点，计算每格大小
     auto layout = printer_->pageLayout();
@@ -27,67 +41,123 @@ void CopybookPainter::paint()
     QRectF boundry(paintRect);
     auto width = boundry.width() / columns_;
     auto height = boundry.height() / rows_;
+    paintRect.moveTo(0, 0);
 
     // 单元格大小
-    auto size = qMin(width, height);
-    auto half = size / 2;
+    cellSize_ = qMin(width, height);
+    totalWidth_ = cellSize_ * columns_;
+    font_.setPixelSize(qRound(cellSize_ * 0.9));
+
+    auto dash = cellSize_ / 13;
+    cross_.setDashPattern({ dash, dash });
+
     // 行间距
-    auto spacing = (height - size) * rows_ / (rows_ - 1);
+    auto spacing = (height - cellSize_) * rows_ / (rows_ - 1);
     // 实际行高
-    height = size + spacing;
-    width = boundry.width();
+    rowHeight_ = cellSize_ + spacing;
 
-    QPen border(Qt::SolidPattern, 1.5);
-    QPen cross(Qt::SolidPattern, 0.75, Qt::DotLine);
+    QPainter p(printer_);
+    p.setFont(font_);
+    p.setWindow(paintRect);
 
-    p_ = new QPainter(printer_);
-    paintRect.moveTo(0, 0);
-    p_->setWindow(paintRect);
+    switch (mode_)
+    {
+    case CopybookMode::OneLinePerCharacter:
+        paintOneLineMode(p);
+        break;
+    case CopybookMode::OnePagePerCharacter:
+        paintOnePageMode(p);
+        break;
+    }
+}
+
+
+void CopybookPainter::paintOneLineMode(QPainter &p) const
+{
+    drawGrid(p);
 
     for (int row = 0; row < rows_; row++)
     {
-        p_->save();
-
-        // 画虚线
-        auto y = height * row;
-        p_->setPen(cross);
-        p_->drawLine(0, y + half, width, y + half);
-
-        // 竖线
-        for (int col = 0; col < columns_; col++)
-        {
-            auto x = size * col + half;
-            p_->drawLine(x, y, x, y + size);
-        }
-
-        // 画边框
-        p_->setPen(border);
-
-        // 上下横线
-        p_->drawLine(0, y, width, y);
-        p_->drawLine(0, y + size, width, y + size);
-
-        // 左右竖线
-        for (int col = 0; col <= columns_; col++)
-        {
-            auto x = size * col;
-            p_->drawLine(x, y, x, y + size);
-        }
+        QPainterSaver ps(p);
 
         // 画字
-        font_.setPixelSize(qRound(size * 0.9));
-        p_->setFont(font_);
-
+        auto y = rowHeight_ * row;
         auto ch = chars_.mid(row % chars_.length(), 1);
 
         for (int col = 0; col < columns_; col++)
         {
-            auto x = size * col;
-            QRectF rect(x, y, size, size);
-            p_->setPen(col == 0 ? Qt::black : Qt::gray);
-            p_->drawText(rect, Qt::AlignCenter, ch);
+            auto x = cellSize_ * col;
+            QRectF rect(x, y, cellSize_, cellSize_);
+            p.setPen(col == 0 ? Qt::black : Qt::lightGray);
+            p.drawText(rect, Qt::AlignCenter, ch);
+        }
+    }
+}
+
+
+void CopybookPainter::paintOnePageMode(QPainter &p) const
+{
+    for (int i = 0; i < chars_.length(); i++)
+    {
+        if (i > 0)
+        {
+            printer_->newPage();
         }
 
-        p_->restore();
+        drawGrid(p);
+
+        // 画字
+        auto ch = chars_.mid(i, 1);
+
+        for (int row = 0; row < rows_; row++)
+        {
+            QPainterSaver ps(p);
+
+            auto y = rowHeight_ * row;
+
+            for (int col = 0; col < columns_; col++)
+            {
+                auto x = cellSize_ * col;
+                QRectF rect(x, y, cellSize_, cellSize_);
+                p.setPen(col == 0 ? Qt::black : Qt::lightGray);
+                p.drawText(rect, Qt::AlignCenter, ch);
+            }
+        }
+    }
+}
+
+
+void CopybookPainter::drawGrid(QPainter &p) const
+{
+    auto half = cellSize_ / 2;
+
+    for (int row = 0; row < rows_; row++)
+    {
+        QPainterSaver ps(p);
+
+        // 画虚线
+        p.setPen(cross_);
+        auto y = rowHeight_ * row;
+
+        for (int col = 0; col < columns_; col++)
+        {
+            auto x = cellSize_ * col;
+            p.drawLine(x, y + half, x + cellSize_, y + half);
+            p.drawLine(x + half, y, x + half, y + cellSize_);
+        }
+
+        // 画边框
+        p.setPen(border_);
+
+        // 上下横线
+        p.drawLine(0, y, totalWidth_, y);
+        p.drawLine(0, y + cellSize_, totalWidth_, y + cellSize_);
+
+        // 竖线
+        for (int col = 0; col <= columns_; col++)
+        {
+            auto x = cellSize_ * col;
+            p.drawLine(x, y, x, y + cellSize_);
+        }
     }
 }

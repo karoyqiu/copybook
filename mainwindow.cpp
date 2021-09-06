@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->spinColumns, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->spinRows, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->comboFont, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
+    connect(ui->comboMode, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
     connect(ui->editChars, &QLineEdit::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->buttonPrint, &QPushButton::clicked, this, &MainWindow::print);
 }
@@ -130,8 +131,9 @@ void MainWindow::fillPageSizes()
 {
     ui->comboPageSize->clear();
     auto info = QPrinterInfo::printerInfo(ui->comboPrinter->currentText());
+    const auto sizes = info.supportedPageSizes();
 
-    for (const auto &ps : info.supportedPageSizes())
+    for (const auto &ps : sizes)
     {
         ui->comboPageSize->addItem(ps.name(), ps.id());
     }
@@ -176,6 +178,7 @@ void MainWindow::createPreviewWidget()
     // 构建预览组件
     previewer_ = new QPrintPreviewWidget(printer_, this);
     previewer_->setAllPagesViewMode();
+    previewer_->setViewMode(QPrintPreviewWidget::SinglePageView);
     previewer_->setZoomMode(QPrintPreviewWidget::FitInView);
     connect(previewer_, &QPrintPreviewWidget::paintRequested, this, &MainWindow::draw);
     ui->centralLayout->addWidget(previewer_, 1);
@@ -188,6 +191,7 @@ void MainWindow::draw(QPrinter *printer)
     cp.setDimension(ui->spinRows->value(), ui->spinColumns->value());
     cp.setFont(ui->comboFont->currentFont());
     cp.setChars(ui->editChars->text());
+    cp.setMode(static_cast<CopybookMode>(ui->comboMode->currentIndex()));
     cp.paint();
 }
 

@@ -219,7 +219,12 @@
        <widget class="QComboBox" name="comboMode">
         <item>
          <property name="text">
-          <string>One character per page</string>
+          <string>One line per character</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>One page per character</string>
          </property>
         </item>
        </widget>
@@ -241,7 +246,7 @@
      <x>0</x>
      <y>0</y>
      <width>947</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
