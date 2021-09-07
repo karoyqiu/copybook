@@ -192,9 +192,9 @@ void CopybookPainter::drawGrid(QPainter &p) const
 
         for (int col = 0; col < columns_; col++)
         {
-            auto x = cellSize_ * col;
-            p.drawLine(x, y + half, x + cellSize_, y + half);
-            p.drawLine(x + half, y, x + half, y + cellSize_);
+            auto x = cellSize_ * col + cross_.widthF() / 2;
+            p.drawLine(x, y + half + cross_.widthF() / 2, x + cellSize_, y + half + cross_.widthF() / 2);
+            p.drawLine(x + half, y + cross_.widthF() / 2, x + half, y + cellSize_ + cross_.widthF() / 2);
         }
 
         // 画边框
