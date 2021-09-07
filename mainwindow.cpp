@@ -125,6 +125,8 @@ QPrinter *MainWindow::createPrinter() const
 
     auto *p = new QPrinter(info, QPrinter::PrinterResolution);
     p->setResolution(300);
+    p->setCreator(qApp->applicationDisplayName());
+    p->setDocName(qApp->applicationDisplayName());
     setPrinterParams(p);
     return p;
 }
