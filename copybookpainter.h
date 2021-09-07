@@ -10,6 +10,8 @@ enum class CopybookMode
     OneLinePerCharacter,
     /// 每字一页
     OnePagePerCharacter,
+    /// 笔画分解，每字一页
+    Stroke,
 };
 
 
@@ -29,7 +31,10 @@ public:
 private:
     void paintOneLineMode(QPainter &p) const;
     void paintOnePageMode(QPainter &p) const;
+    void paintStroke(QPainter &p) const;
     void drawGrid(QPainter &p) const;
+    
+    static void mapSourceToTarget(QPainter &p, const QRectF &source, const QRectF &target);
 
 private:
     QPrinter *printer_;

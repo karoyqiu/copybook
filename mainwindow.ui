@@ -11,7 +11,7 @@
    </rect>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="centralLayout" stretch="0">
+   <layout class="QHBoxLayout" name="centralLayout">
     <item>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
@@ -227,12 +227,41 @@
           <string>One page per character</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Stroke</string>
+         </property>
+        </item>
        </widget>
       </item>
-      <item row="9" column="0" colspan="2">
+      <item row="10" column="0" colspan="2">
        <widget class="QPushButton" name="buttonPrint">
         <property name="text">
          <string>Print</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="editStrokeGraphics"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="buttonBrowseStroke">
+          <property name="text">
+           <string>Browse...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Stroke graphics:</string>
+        </property>
+        <property name="buddy">
+         <cstring>editStrokeGraphics</cstring>
         </property>
        </widget>
       </item>
@@ -246,7 +275,7 @@
      <x>0</x>
      <y>0</y>
      <width>947</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
@@ -276,6 +305,9 @@
   <tabstop>comboFont</tabstop>
   <tabstop>editChars</tabstop>
   <tabstop>comboMode</tabstop>
+  <tabstop>editStrokeGraphics</tabstop>
+  <tabstop>buttonBrowseStroke</tabstop>
+  <tabstop>buttonPrint</tabstop>
  </tabstops>
  <resources/>
  <connections/>

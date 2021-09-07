@@ -1,4 +1,5 @@
 ﻿#include "copybookpainter.h"
+#include "strokegraphics.h"
 
 
 struct QPainterSaver
@@ -59,6 +60,7 @@ void CopybookPainter::paint()
     QPainter p(printer_);
     p.setFont(font_);
     p.setWindow(paintRect);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 
     switch (mode_)
     {
@@ -67,6 +69,9 @@ void CopybookPainter::paint()
         break;
     case CopybookMode::OnePagePerCharacter:
         paintOnePageMode(p);
+        break;
+    case CopybookMode::Stroke:
+        paintStroke(p);
         break;
     }
 }
@@ -127,6 +132,57 @@ void CopybookPainter::paintOnePageMode(QPainter &p) const
 }
 
 
+void CopybookPainter::paintStroke(QPainter &p) const
+{
+    for (int i = 0; i < chars_.length(); i++)
+    {
+        if (i > 0)
+        {
+            printer_->newPage();
+        }
+
+        drawGrid(p);
+
+        // 画字
+        auto ch = chars_.at(i);
+        auto strokes = StrokeGraphics::global()->strokesFor(ch);
+
+        if (strokes.isEmpty())
+        {
+            continue;
+        }
+
+        // 原坐标矩形
+        QPolygonF from({ { 0, 900 }, { 1024, 900 }, { 1024, -124 }, { 0, -124 } });
+
+        for (int row = 0; row < rows_; row++)
+        {
+            auto y = rowHeight_ * row;
+
+            for (int col = 0; col < columns_; col++)
+            {
+                QPainterSaver ps(p);
+
+                auto x = cellSize_ * col;
+                QRectF rect(x, y, cellSize_, cellSize_);
+                QPolygonF to({ rect.topLeft(), rect.topRight(), rect.bottomRight(), rect.bottomLeft() });
+                QTransform trans;
+
+                if (QTransform::quadToQuad(from, to, trans))
+                {
+                    p.setTransform(trans);
+                }
+
+                for (int j = 0; j < strokes.size(); j++)
+                {
+                    p.fillPath(strokes.at(j), (j <= col && col < strokes.size()) ? Qt::black : Qt::lightGray);
+                }
+            }
+        }
+    }
+}
+
+
 void CopybookPainter::drawGrid(QPainter &p) const
 {
     auto half = cellSize_ / 2;
@@ -160,4 +216,13 @@ void CopybookPainter::drawGrid(QPainter &p) const
             p.drawLine(x, y, x, y + cellSize_);
         }
     }
+}
+
+
+void CopybookPainter::mapSourceToTarget(QPainter &p, const QRectF &source, const QRectF &target)
+{
+    auto trans = QTransform::fromScale(target.width() / source.width(), target.height() / source.height());
+    auto c2 = trans.mapRect(source);
+    p.translate(target.x() - c2.x(), target.y() - c2.y());
+    p.scale(target.width() / source.width(), target.height() / source.height());
 }

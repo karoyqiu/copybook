@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 
 #include "copybookpainter.h"
+#include "strokegraphics.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->comboMode, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
     connect(ui->editChars, &QLineEdit::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->buttonPrint, &QPushButton::clicked, this, &MainWindow::print);
+    connect(ui->buttonBrowseStroke, &QPushButton::clicked, this, &MainWindow::browseStroke);
 }
 
 
@@ -67,12 +69,15 @@ void MainWindow::loadSettings()
     ui->comboMode->setCurrentIndex(settings.value(QS("mode")).toInt());
     ui->comboFont->setCurrentFont(settings.value(QS("font")).toString());
     ui->editChars->setText(settings.value(QS("chars")).toString());
+    ui->editStrokeGraphics->setText(settings.value(QS("stroke")).toString());
     ui->spinMarginLeft->setValue(settings.value(QS("ml")).toDouble());
     ui->spinMarginTop->setValue(settings.value(QS("mt")).toDouble());
     ui->spinMarginRight->setValue(settings.value(QS("mr")).toDouble());
     ui->spinMarginBottom->setValue(settings.value(QS("mb")).toDouble());
     ui->spinColumns->setValue(settings.value(QS("col")).toInt());
     ui->spinRows->setValue(settings.value(QS("row")).toInt());
+
+    StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
 }
 
 
@@ -87,12 +92,26 @@ void MainWindow::saveSettings() const
     settings.setValue(QS("mode"), ui->comboMode->currentIndex());
     settings.setValue(QS("font"), ui->comboFont->currentFont().family());
     settings.setValue(QS("chars"), ui->editChars->text());
+    settings.setValue(QS("stroke"), ui->editStrokeGraphics->text());
     settings.setValue(QS("ml"), ui->spinMarginLeft->value());
     settings.setValue(QS("mt"), ui->spinMarginTop->value());
     settings.setValue(QS("mr"), ui->spinMarginRight->value());
     settings.setValue(QS("mb"), ui->spinMarginBottom->value());
     settings.setValue(QS("col"), ui->spinColumns->value());
     settings.setValue(QS("row"), ui->spinRows->value());
+}
+
+
+void MainWindow::browseStroke()
+{
+    auto filename = QFileDialog::getOpenFileName(this, {}, QS("graphics.txt"), tr("Plain text files (*.txt)"));
+
+    if (!filename.isEmpty())
+    {
+        ui->editStrokeGraphics->setText(QDir::toNativeSeparators(filename));
+        StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
+        saveSettings();
+    }
 }
 
 
