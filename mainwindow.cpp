@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->spinMarginBottom, &QDoubleSpinBox::editingFinished, this, &MainWindow::adjustPrinterParams);
     connect(ui->spinColumns, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->spinRows, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
+    connect(ui->spinScale, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->comboFont, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
     connect(ui->comboMode, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
     connect(ui->editChars, &QLineEdit::editingFinished, this, &MainWindow::updatePreview);
@@ -76,6 +77,7 @@ void MainWindow::loadSettings()
     ui->spinMarginBottom->setValue(settings.value(QS("mb")).toDouble());
     ui->spinColumns->setValue(settings.value(QS("col")).toInt());
     ui->spinRows->setValue(settings.value(QS("row")).toInt());
+    ui->spinScale->setValue(settings.value(QS("scale"), 100).toDouble());
 
     StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
 }
@@ -99,6 +101,7 @@ void MainWindow::saveSettings() const
     settings.setValue(QS("mb"), ui->spinMarginBottom->value());
     settings.setValue(QS("col"), ui->spinColumns->value());
     settings.setValue(QS("row"), ui->spinRows->value());
+    settings.setValue(QS("scale"), ui->spinScale->value());
 }
 
 
@@ -211,6 +214,7 @@ void MainWindow::draw(QPrinter *printer)
     cp.setFont(ui->comboFont->currentFont());
     cp.setChars(ui->editChars->text());
     cp.setMode(static_cast<CopybookMode>(ui->comboMode->currentIndex()));
+    cp.setScale(ui->spinScale->value() / 100);
     cp.paint();
 }
 

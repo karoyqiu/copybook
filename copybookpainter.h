@@ -25,6 +25,7 @@ public:
     void setFont(const QFont &value) { font_ = value; }
     void setChars(const QString &value) { chars_ = value; }
     void setMode(CopybookMode value) { mode_ = value; }
+    void setScale(qreal value) { scale_ = value * 0.85; }       // 默认四周留空
 
     virtual void paint();
 
@@ -33,7 +34,8 @@ private:
     void paintOnePageMode(QPainter &p) const;
     void paintStroke(QPainter &p) const;
     void drawGrid(QPainter &p) const;
-    
+    QRectF cellRect(int row, int col) const;
+    QRectF cellRect(qreal x, qreal y) const;
     static void mapSourceToTarget(QPainter &p, const QRectF &source, const QRectF &target);
 
 private:
@@ -45,6 +47,8 @@ private:
     qreal totalWidth_;
     qreal cellSize_;
     qreal rowHeight_;
+    qreal scale_;
+    qreal margin_;
     QFont font_;
     QString chars_;
     QPen border_;

@@ -43,22 +43,6 @@ QVector<QPainterPath> StrokeGraphics::strokesFor(const QChar &ch) const
     }
     else
     {
-        //for (int i = 0; i < strokes.size(); i++)
-        //{
-        //    QString result;
-        //    QTextStream s(&result, QIODevice::WriteOnly);
-        //    s << QL(R"(<svg viewBox="0 0 1024 1024">)")
-        //        << QL(R"_(<g transform="scale(1, -1) translate(0, -900)">)_");
-
-        //    for (int j = 0; j <= i; j++)
-        //    {
-        //        s << QL(R"(<path d=")") << strokes.at(j) << QL(R"("></path>)");
-        //    }
-
-        //    s << QL("</g>") << QL("</svg>");
-
-        //    list << result.toUtf8();
-        //}
         for (const auto &str : strokes)
         {
             list << strokeToPath(str);
@@ -143,15 +127,3 @@ QPointF StrokeGraphics::readPoint(const QStringList &cmds, int &from)
     from += 2;
     return { x, y };
 }
-
-
-//QByteArray StrokeGraphics::strokeToSvg(const QString &stroke)
-//{
-//    QString result;
-//    QTextStream s(&result, QIODevice::WriteOnly);
-//    s << QL(R"(<svg viewBox="0 0 1024 1024">)") << QL(R"_(<g transform="scale(1, -1) translate(0, -900)">)_");
-//    s << QL(R"(<path d=")") << stroke << QL(R"("></path>)");
-//    s << QL("</g>") << QL("</svg>");
-//
-//    return result.toUtf8();
-//}
