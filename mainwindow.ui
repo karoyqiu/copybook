@@ -189,6 +189,30 @@
        <widget class="QFontComboBox" name="comboFont"/>
       </item>
       <item row="7" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Grid:</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboGrid</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QComboBox" name="comboGrid">
+        <item>
+         <property name="text">
+          <string>Tian grid</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Four lines</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="8" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Characters:</string>
@@ -198,14 +222,14 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <widget class="QLineEdit" name="editChars">
         <property name="clearButtonEnabled">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Mode:</string>
@@ -215,7 +239,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="9" column="1">
        <widget class="QComboBox" name="comboMode">
         <item>
          <property name="text">
@@ -234,14 +258,17 @@
         </item>
        </widget>
       </item>
-      <item row="11" column="0" colspan="2">
-       <widget class="QPushButton" name="buttonPrint">
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>Print</string>
+         <string>Stroke graphics:</string>
+        </property>
+        <property name="buddy">
+         <cstring>editStrokeGraphics</cstring>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="10" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLineEdit" name="editStrokeGraphics"/>
@@ -255,17 +282,7 @@
         </item>
        </layout>
       </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Stroke graphics:</string>
-        </property>
-        <property name="buddy">
-         <cstring>editStrokeGraphics</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
+      <item row="11" column="0">
        <widget class="QLabel" name="label_11">
         <property name="text">
          <string>Scale:</string>
@@ -275,7 +292,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="11" column="1">
        <widget class="QDoubleSpinBox" name="spinScale">
         <property name="suffix">
          <string>%</string>
@@ -288,6 +305,94 @@
         </property>
        </widget>
       </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Offset:</string>
+        </property>
+        <property name="buddy">
+         <cstring>spinOffsetX</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QDoubleSpinBox" name="spinOffsetX">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefix">
+           <string>H: </string>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="spinOffsetY">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefix">
+           <string>V: </string>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="14" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Zoom:</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboZoom</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0" colspan="2">
+       <widget class="QPushButton" name="buttonPrint">
+        <property name="text">
+         <string>Print</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="1">
+       <widget class="QComboBox" name="comboZoom">
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>100%</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fit to width</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fit in view</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -298,7 +403,7 @@
      <x>0</x>
      <y>0</y>
      <width>947</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -326,11 +431,14 @@
   <tabstop>spinColumns</tabstop>
   <tabstop>spinRows</tabstop>
   <tabstop>comboFont</tabstop>
+  <tabstop>comboGrid</tabstop>
   <tabstop>editChars</tabstop>
   <tabstop>comboMode</tabstop>
   <tabstop>editStrokeGraphics</tabstop>
   <tabstop>buttonBrowseStroke</tabstop>
   <tabstop>spinScale</tabstop>
+  <tabstop>spinOffsetX</tabstop>
+  <tabstop>spinOffsetY</tabstop>
   <tabstop>buttonPrint</tabstop>
  </tabstops>
  <resources/>

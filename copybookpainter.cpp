@@ -16,12 +16,14 @@ CopybookPainter::CopybookPainter(QPrinter *printer)
     , mode_(CopybookMode::OneLinePerCharacter)
     , rows_(0)
     , columns_(0)
+    , grid_(GridType::Tian)
     , borderWidth_(1.5)
     , totalWidth_(0)
     , cellSize_(0)
     , rowHeight_(0)
     , scale_(1)
     , margin_(0)
+    , offset_(0, 0)
     , border_(Qt::SolidPattern, borderWidth_)
     , cross_(Qt::SolidPattern, borderWidth_ / 2, Qt::CustomDashLine, Qt::FlatCap)
 {
@@ -95,7 +97,7 @@ void CopybookPainter::paintOneLineMode(QPainter &p) const
         {
             auto rect = cellRect(row, col);
             p.setPen(col == 0 ? Qt::black : Qt::lightGray);
-            p.drawText(rect, Qt::AlignCenter, ch);
+            p.drawText(rect, Qt::AlignCenter | Qt::TextDontClip, ch);
         }
     }
 }
@@ -180,6 +182,20 @@ void CopybookPainter::paintStroke(QPainter &p) const
 
 void CopybookPainter::drawGrid(QPainter &p) const
 {
+    switch (grid_)
+    {
+    case GridType::Tian:
+        drawTianGrid(p);
+        break;
+    case GridType::FourLines:
+        drawFourLines(p);
+        break;
+    }
+}
+
+
+void CopybookPainter::drawTianGrid(QPainter &p) const
+{
     auto half = cellSize_ / 2;
 
     for (int row = 0; row < rows_; row++)
@@ -214,6 +230,24 @@ void CopybookPainter::drawGrid(QPainter &p) const
 }
 
 
+void CopybookPainter::drawFourLines(QPainter &p) const
+{
+    auto oneThird = cellSize_ / 3;
+
+    for (int row = 0; row < rows_; row++)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            QPainterSaver ps(p);
+            p.setPen((i == 0 || i == 3) ? border_ : cross_);
+
+            auto y = rowHeight_ * row + oneThird * i;
+            p.drawLine(0, y, totalWidth_, y);
+        }
+    }
+}
+
+
 QRectF CopybookPainter::cellRect(int row, int col) const
 {
     auto x = cellSize_ * col;
@@ -225,14 +259,6 @@ QRectF CopybookPainter::cellRect(int row, int col) const
 QRectF CopybookPainter::cellRect(qreal x, qreal y) const
 {
     QRectF rect(x, y, cellSize_, cellSize_);
+    rect.translate(offset_);
     return rect.marginsRemoved({ margin_, margin_, margin_, margin_ });
-}
-
-
-void CopybookPainter::mapSourceToTarget(QPainter &p, const QRectF &source, const QRectF &target)
-{
-    auto trans = QTransform::fromScale(target.width() / source.width(), target.height() / source.height());
-    auto c2 = trans.mapRect(source);
-    p.translate(target.x() - c2.x(), target.y() - c2.y());
-    p.scale(target.width() / source.width(), target.height() / source.height());
 }
