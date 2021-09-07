@@ -14,6 +14,7 @@ set(USE_FOLDERS ON)
 
 set(QT_LIBS
     PrintSupport
+    Svg
     Widgets
 )
 
@@ -29,6 +30,7 @@ set(PROJECT_SOURCES
     mainwindow.h
     mainwindow.ui
     copybookpainter.h copybookpainter.cpp
+    strokegraphics.h strokegraphics.cpp
     ${TS_FILES}
 )
 
