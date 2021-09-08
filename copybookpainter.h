@@ -32,7 +32,7 @@ public:
 
     void setDimension(int rows, int columns) { rows_ = rows; columns_ = columns; }
     void setFont(const QFont &value) { font_ = value; }
-    void setChars(const QString &value) { chars_ = value; }
+    void setChars(const QString &value) { chars_ = splitChars(value); }
     void setMode(CopybookMode value) { mode_ = value; }
     void setGrid(GridType value) { grid_ = value; }
     void setScale(qreal value) { scale_ = value * 0.85; }       // 默认四周留空
@@ -51,6 +51,8 @@ private:
     QRectF cellRect(int row, int col) const;
     QRectF cellRect(qreal x, qreal y) const;
 
+    static QStringList splitChars(const QString &s);
+
 private:
     QPrinter *printer_;
     CopybookMode mode_;
@@ -65,7 +67,7 @@ private:
     qreal margin_;
     QPointF offset_;
     QFont font_;
-    QString chars_;
+    QStringList chars_;
     QPen border_;
     QPen cross_;
 };

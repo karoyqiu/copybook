@@ -91,13 +91,18 @@ void CopybookPainter::paintOneLineMode(QPainter &p) const
     for (int row = 0; row < rows_; row++)
     {
         // 画字
-        auto ch = chars_.mid(row % chars_.length(), 1);
+        auto ch = chars_.at(row % chars_.length());
 
         for (int col = 0; col < columns_; col++)
         {
             auto rect = cellRect(row, col);
             p.setPen(col == 0 ? Qt::black : Qt::lightGray);
-            p.drawText(rect, Qt::AlignCenter | Qt::TextDontClip, ch);
+
+            // 某些字体无法正确绘制组合字符，比如 ɑ̄
+            for (const auto &c : ch)
+            {
+                p.drawText(rect, Qt::AlignCenter | Qt::TextDontClip, c);
+            }
         }
     }
 }
@@ -116,7 +121,7 @@ void CopybookPainter::paintOnePageMode(QPainter &p) const
 
         // 画字
         QPainterSaver ps(p);
-        auto ch = chars_.mid(i, 1);
+        auto ch = chars_.at(i);
 
         for (int row = 0; row < rows_; row++)
         {
@@ -124,7 +129,12 @@ void CopybookPainter::paintOnePageMode(QPainter &p) const
             {
                 auto rect = cellRect(row, col);
                 p.setPen(col == 0 ? Qt::black : Qt::lightGray);
-                p.drawText(rect, Qt::AlignCenter, ch);
+
+                // 某些字体无法正确绘制组合字符，比如 ɑ̄
+                for (const auto &c : ch)
+                {
+                    p.drawText(rect, Qt::AlignCenter | Qt::TextDontClip, c);
+                }
             }
         }
     }
@@ -144,7 +154,8 @@ void CopybookPainter::paintStroke(QPainter &p) const
 
         // 画字
         auto ch = chars_.at(i);
-        auto strokes = StrokeGraphics::global()->strokesFor(ch);
+        Q_ASSERT(ch.length() == 1);
+        auto strokes = StrokeGraphics::global()->strokesFor(ch.at(0));
 
         if (strokes.isEmpty())
         {
@@ -261,4 +272,35 @@ QRectF CopybookPainter::cellRect(qreal x, qreal y) const
     QRectF rect(x, y, cellSize_, cellSize_);
     rect.translate(offset_);
     return rect.marginsRemoved({ margin_, margin_, margin_, margin_ });
+}
+
+
+QStringList CopybookPainter::splitChars(const QString &s)
+{
+    QStringList chars;
+    QString t;
+
+    for (const auto &ch : s)
+    {
+        if (ch.combiningClass() == 0)
+        {
+            if (!t.isEmpty())
+            {
+                chars.append(t);
+            }
+
+            t = ch;
+        }
+        else
+        {
+            t.append(ch);
+        }
+    }
+
+    if (!t.isEmpty())
+    {
+        chars.append(t);
+    }
+
+    return chars;
 }

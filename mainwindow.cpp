@@ -86,7 +86,7 @@ void MainWindow::loadSettings()
     ui->spinOffsetX->setValue(settings.value(QS("offsetX")).toDouble());
     ui->spinOffsetY->setValue(settings.value(QS("offsetY")).toDouble());
 
-    StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
+    //StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
 }
 
 
@@ -200,7 +200,6 @@ void MainWindow::createPreviewWidget()
     // 删除原来的组件
     if (previewer_ != nullptr)
     {
-        Q_ASSERT(printer_ != nullptr);
         ui->centralLayout->removeWidget(previewer_);
         previewer_->disconnect(this);
 
