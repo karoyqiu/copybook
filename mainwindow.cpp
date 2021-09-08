@@ -39,8 +39,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->spinColumns, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->spinRows, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->spinScale, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
-    connect(ui->comboFont, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
+    connect(ui->spinOffsetX, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
+    connect(ui->spinOffsetY, &QDoubleSpinBox::editingFinished, this, &MainWindow::updatePreview);
+    connect(ui->comboFont, &QFontComboBox::currentFontChanged, this, &MainWindow::updatePreview);
     connect(ui->comboMode, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
+    connect(ui->comboGrid, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
+    connect(ui->comboZoom, &QComboBox::currentTextChanged, this, &MainWindow::updatePreview);
     connect(ui->editChars, &QLineEdit::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->buttonPrint, &QPushButton::clicked, this, &MainWindow::print);
     connect(ui->buttonBrowseStroke, &QPushButton::clicked, this, &MainWindow::browseStroke);
@@ -68,6 +72,7 @@ void MainWindow::loadSettings()
     ui->comboPageSize->setCurrentIndex(settings.value(QS("paperSize")).toInt());
     ui->comboUnit->setCurrentIndex(settings.value(QS("unit")).toInt());
     ui->comboMode->setCurrentIndex(settings.value(QS("mode")).toInt());
+    ui->comboGrid->setCurrentIndex(settings.value(QS("grid")).toInt());
     ui->comboFont->setCurrentFont(settings.value(QS("font")).toString());
     ui->editChars->setText(settings.value(QS("chars")).toString());
     ui->editStrokeGraphics->setText(settings.value(QS("stroke")).toString());
@@ -78,8 +83,10 @@ void MainWindow::loadSettings()
     ui->spinColumns->setValue(settings.value(QS("col")).toInt());
     ui->spinRows->setValue(settings.value(QS("row")).toInt());
     ui->spinScale->setValue(settings.value(QS("scale"), 100).toDouble());
+    ui->spinOffsetX->setValue(settings.value(QS("offsetX")).toDouble());
+    ui->spinOffsetY->setValue(settings.value(QS("offsetY")).toDouble());
 
-    StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
+    //StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
 }
 
 
@@ -92,6 +99,7 @@ void MainWindow::saveSettings() const
     settings.setValue(QS("paperSize"), ui->comboPageSize->currentIndex());
     settings.setValue(QS("unit"), ui->comboUnit->currentIndex());
     settings.setValue(QS("mode"), ui->comboMode->currentIndex());
+    settings.setValue(QS("grid"), ui->comboGrid->currentIndex());
     settings.setValue(QS("font"), ui->comboFont->currentFont().family());
     settings.setValue(QS("chars"), ui->editChars->text());
     settings.setValue(QS("stroke"), ui->editStrokeGraphics->text());
@@ -102,6 +110,8 @@ void MainWindow::saveSettings() const
     settings.setValue(QS("col"), ui->spinColumns->value());
     settings.setValue(QS("row"), ui->spinRows->value());
     settings.setValue(QS("scale"), ui->spinScale->value());
+    settings.setValue(QS("offsetX"), ui->spinOffsetX->value());
+    settings.setValue(QS("offsetY"), ui->spinOffsetY->value());
 }
 
 
@@ -175,6 +185,11 @@ void MainWindow::updatePreview()
 {
     if (previewer_ != nullptr)
     {
+        if (previewer_->zoomMode() != ui->comboZoom->currentIndex())
+        {
+            previewer_->setZoomMode(static_cast<QPrintPreviewWidget::ZoomMode>(ui->comboZoom->currentIndex()));
+        }
+
         previewer_->updatePreview();
     }
 }
@@ -185,7 +200,6 @@ void MainWindow::createPreviewWidget()
     // 删除原来的组件
     if (previewer_ != nullptr)
     {
-        Q_ASSERT(printer_ != nullptr);
         ui->centralLayout->removeWidget(previewer_);
         previewer_->disconnect(this);
 
@@ -203,7 +217,7 @@ void MainWindow::createPreviewWidget()
     previewer_ = new QPrintPreviewWidget(printer_, this);
     previewer_->setAllPagesViewMode();
     previewer_->setViewMode(QPrintPreviewWidget::SinglePageView);
-    previewer_->setZoomMode(QPrintPreviewWidget::FitInView);
+    previewer_->setZoomMode(static_cast<QPrintPreviewWidget::ZoomMode>(ui->comboZoom->currentIndex()));
     connect(previewer_, &QPrintPreviewWidget::paintRequested, this, &MainWindow::draw);
     ui->centralLayout->addWidget(previewer_, 1);
 }
@@ -216,7 +230,9 @@ void MainWindow::draw(QPrinter *printer)
     cp.setFont(ui->comboFont->currentFont());
     cp.setChars(ui->editChars->text());
     cp.setMode(static_cast<CopybookMode>(ui->comboMode->currentIndex()));
+    cp.setGrid(static_cast<GridType>(ui->comboGrid->currentIndex()));
     cp.setScale(ui->spinScale->value() / 100);
+    cp.setOffset(ui->spinOffsetX->value(), ui->spinOffsetY->value());
     cp.paint();
 }
 
