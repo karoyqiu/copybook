@@ -14,6 +14,7 @@ set(USE_FOLDERS ON)
 
 set(QT_LIBS
     PrintSupport
+    Sql
     Svg
     Widgets
 )

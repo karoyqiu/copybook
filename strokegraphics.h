@@ -4,17 +4,20 @@
 class StrokeGraphics
 {
 public:
+    StrokeGraphics();
+    virtual ~StrokeGraphics();
+
     void loadFromFile(const QString &filename);
 
-    bool isEmpty() const { return strokes_.isEmpty();  }
     QVector<QPainterPath> strokesFor(const QChar &ch) const;
 
     static StrokeGraphics *global();
 
 private:
-    static QPainterPath strokeToPath(const QString &stroke);
-    static QPointF readPoint(const QStringList &cmds, int &from);
+    static QPainterPath strokeToPath(const QStringRef &stroke);
+    static QPointF readPoint(const QVector<QStringRef> &cmds, int &from);
 
-private:
-    QHash<QChar, QStringList> strokes_;
+    void openDatabase();
+    void closeDatabase();
+    QSqlDatabase database() const;
 };
