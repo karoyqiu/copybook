@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->editChars, &QLineEdit::editingFinished, this, &MainWindow::updatePreview);
     connect(ui->buttonPrint, &QPushButton::clicked, this, &MainWindow::print);
     connect(ui->buttonBrowseStroke, &QPushButton::clicked, this, &MainWindow::browseStroke);
+    connect(ui->buttonLoadStroke, &QPushButton::clicked, this, &MainWindow::loadStroke);
 }
 
 
@@ -85,8 +86,6 @@ void MainWindow::loadSettings()
     ui->spinScale->setValue(settings.value(QS("scale"), 100).toDouble());
     ui->spinOffsetX->setValue(settings.value(QS("offsetX")).toDouble());
     ui->spinOffsetY->setValue(settings.value(QS("offsetY")).toDouble());
-
-    //StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
 }
 
 
@@ -125,6 +124,12 @@ void MainWindow::browseStroke()
         StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
         saveSettings();
     }
+}
+
+
+void MainWindow::loadStroke()
+{
+    StrokeGraphics::global()->loadFromFile(ui->editStrokeGraphics->text());
 }
 
 

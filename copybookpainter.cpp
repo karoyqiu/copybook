@@ -154,7 +154,6 @@ void CopybookPainter::paintStroke(QPainter &p) const
 
         // 画字
         auto ch = chars_.at(i);
-        Q_ASSERT(ch.length() == 1);
         auto strokes = StrokeGraphics::global()->strokesFor(ch.at(0));
 
         if (strokes.isEmpty())

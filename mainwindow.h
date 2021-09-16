@@ -23,6 +23,7 @@ private:
     void saveSettings() const;
 
     void browseStroke();
+    void loadStroke();
 
     QPrinter *createPrinter() const;
     void setPrinterParams(QPrinter *printer) const;

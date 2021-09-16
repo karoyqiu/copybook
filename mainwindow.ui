@@ -280,6 +280,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="buttonLoadStroke">
+          <property name="text">
+           <string>Load</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="11" column="0">
@@ -403,7 +410,7 @@
      <x>0</x>
      <y>0</y>
      <width>947</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
@@ -436,10 +443,12 @@
   <tabstop>comboMode</tabstop>
   <tabstop>editStrokeGraphics</tabstop>
   <tabstop>buttonBrowseStroke</tabstop>
+  <tabstop>buttonLoadStroke</tabstop>
   <tabstop>spinScale</tabstop>
   <tabstop>spinOffsetX</tabstop>
   <tabstop>spinOffsetY</tabstop>
   <tabstop>buttonPrint</tabstop>
+  <tabstop>comboZoom</tabstop>
  </tabstops>
  <resources/>
  <connections/>
